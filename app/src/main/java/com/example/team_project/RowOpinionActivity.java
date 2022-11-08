@@ -77,9 +77,6 @@ public class RowOpinionActivity extends AppCompatActivity implements View.OnClic
         getSharedData();
 
 
-        Log.d(TAG, "agreeJsonArray: "+agreeJsonArray);
-        Log.d(TAG, "disagreeJsonArray: "+disagreeJsonArray);
-
         Log.d(TAG, "agreeList: "+agreeList);
         Log.d(TAG, "disagreeList: "+disagreeList);
 
@@ -103,6 +100,7 @@ public class RowOpinionActivity extends AppCompatActivity implements View.OnClic
         SharedPreferences sharedPreferences=getSharedPreferences("voting",0);
         String jsonCurrent=sharedPreferences.getString(data.getBill_no(),null);
         if(jsonCurrent==null){
+            Log.d(TAG, "jsonCurrent: null");
             return;
         }
         try {
@@ -129,11 +127,21 @@ public class RowOpinionActivity extends AppCompatActivity implements View.OnClic
                     disagreeList.add(opinionData);
                 }
             }
-
             int 전체=agreeJsonArray.length()+disagreeJsonArray.length();
             binding.tvTotalCnt.setText("전체 : "+전체);
             binding.tvAgree.setText("찬성 : "+agreeJsonArray.length());
             binding.tvDisagree.setText("반대 : "+disagreeJsonArray.length());
+            Log.d(TAG, "getSharedData: "+agreeJsonArray.length());
+            Log.d(TAG, "getSharedData: "+disagreeJsonArray.length());
+
+            if(agreeJsonArray==null){
+                binding.tvAgree.setText("찬성 : 0");
+                Log.d(TAG, "agreeJsonArray==null: ");
+            }
+            if(disagreeJsonArray==null){
+                binding.tvDisagree.setText("반대 : 0");
+                Log.d(TAG, "disagreeJsonArray==null: ");
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -170,6 +178,7 @@ public class RowOpinionActivity extends AppCompatActivity implements View.OnClic
         setChart("찬성");
     }
     private void setChart(String 의견) {
+        Log.d(TAG, "setChart: ");
         if(agreeJsonArray==null &&disagreeJsonArray==null ) return;
         binding.chart.clearChart();
         if("찬성".equals(의견)){
@@ -294,6 +303,10 @@ public class RowOpinionActivity extends AppCompatActivity implements View.OnClic
                 editor.apply();
                 String no =data.getBill_no();
                 Log.d(TAG, "onClick: "+sharedPreferences.getString(no,null));
+                agreeList.clear();
+                disagreeList.clear();
+                getSharedData();
+                setAgreeRecyclerview();
                 dilaog01.dismiss();
             }
         });
@@ -312,4 +325,9 @@ public class RowOpinionActivity extends AppCompatActivity implements View.OnClic
         return strToday;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
 }
