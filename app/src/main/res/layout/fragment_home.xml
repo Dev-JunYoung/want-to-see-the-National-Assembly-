@@ -71,9 +71,10 @@
                     />
             </LinearLayout>
             <LinearLayout
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.85"
+                android:layout_weight="1.2"
                 android:orientation="vertical">
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -104,34 +105,35 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/tv_bill_name"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_fav"
                     android:layout_margin="5dp"
-                    android:textStyle="bold"
-                    android:text="즐겨찾기 한 법률안"
-                    android:textSize="15dp"
+                    tools:listitem="@layout/item_fav"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-
-                <ImageView
-                    android:background="@drawable/process_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_margin="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.6"
+                android:layout_weight="1"
                 android:orientation="vertical">
                 <TextView
                     android:layout_margin="5dp"
                     android:textSize="25dp"
                     android:textStyle="bold"
-                    android:text="입법절자"
+                    android:text="입법절차"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_margin="5dp"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:text="해당 입법 절차를 더 알고싶은 분들은 클릭하여 자세한 정보를 더 확인해 보세요"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -195,43 +197,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
-            <LinearLayout
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.9"
-                android:orientation="vertical">
-                <TextView
-                    android:textStyle="bold"
-                    android:text="즐겨찾기 많이 한 법률안 리스트"
-                    android:textSize="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="10dp">
-                    <TextView
-                        android:layout_margin="3dp"
-                        android:textSize="18dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="1. 소방기본법 일부개정법률안(대안)"/>
-                    <TextView
-                        android:layout_margin="3dp"
-                        android:textSize="18dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="2. 섬 발전 촉진법 일부개정 법률안(대안)"/>
-                    <TextView
-                        android:layout_margin="3dp"
-                        android:textSize="18dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="3. 자동차관리법 일부개정법률안(대안)"/>
-                </LinearLayout>
-            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

@@ -79,8 +79,9 @@ public class SearchResultActivity extends AppCompatActivity {
                                                             element.getString("PROPOSE_DT"),
                                                             element.getString("CURR_COMMITTEE_ID"),
                                                             element.getString("CURR_COMMITTEE"),
-                                                            element.getString("LINK_URL")
-                                                            );
+                                                            element.getString("LINK_URL"),
+                                                            1
+                                                    );
                                                     rowList.add(rowData);
                                                 }
                                                 setRecyclerview(rowList);

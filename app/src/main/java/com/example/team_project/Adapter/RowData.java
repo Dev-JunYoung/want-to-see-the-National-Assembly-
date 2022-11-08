@@ -11,8 +11,9 @@ public class RowData implements Serializable {
     private String curr_committee_id; // 소관위원회 id
     private String curr_committee; // 소관위원회
     private String link_url;
+    private int step; // 입법 과정 절차
 
-    public RowData(String bill_no, String bill_name, String proposer, String propose_dt, String curr_committee_id,String curr_committee, String link_url) {
+    public RowData(String bill_no, String bill_name, String proposer, String propose_dt, String curr_committee_id,String curr_committee, String link_url, int step) {
         this.bill_no = bill_no;
         this.bill_name = bill_name;
         this.proposer = proposer;
@@ -20,6 +21,7 @@ public class RowData implements Serializable {
         this.curr_committee_id = curr_committee_id;
         this.curr_committee = curr_committee;
         this.link_url = link_url;
+        this.step = step;
     }
 
     public String getProposer() {
@@ -91,6 +93,15 @@ public class RowData implements Serializable {
         this.link_url = link_url;
     }
 
+    // 법률안 입법과정
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
+
     @Override
     public String toString() {
         return "RowData{" +
@@ -102,6 +113,7 @@ public class RowData implements Serializable {
                 ", curr_committee_id='" + curr_committee_id + '\'' +
                 ", curr_committee='" + curr_committee + '\'' +
                 ", link_url='" + link_url + '\'' +
+                ", step='" + step + '\'' + // 법률안의 입법 과정
                 '}';
     }
 }

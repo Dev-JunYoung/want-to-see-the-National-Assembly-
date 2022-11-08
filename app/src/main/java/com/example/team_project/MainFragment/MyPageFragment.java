@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.team_project.Adapter.NewsData;
 import com.example.team_project.Retrofit.ApiInterface;
 import com.example.team_project.Retrofit.RetrofitNaverSearch;
 import com.example.team_project.databinding.FragmentMyPageBinding;
@@ -32,44 +33,22 @@ public class MyPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding= FragmentMyPageBinding.inflate(inflater,container,false);
 
-        binding.step1.setOnClickListener(view -> {
-            searchNaverNews("발의");
-        });
-        binding.step2.setOnClickListener(view -> {
-            searchNaverNews("입법예고");
-        });
-        binding.step3.setOnClickListener(view -> {
-            searchNaverNews("법사위심사");
-        });
-        binding.step4.setOnClickListener(view -> {
-            searchNaverNews("본회의심의");
-        });
-        binding.step5.setOnClickListener(view -> {
-            searchNaverNews("법률안 이송");
-        });
+//        binding.step1.setOnClickListener(view -> {
+//            searchNaverNews("발의");
+//        });
+//        binding.step2.setOnClickListener(view -> {
+//            searchNaverNews("입법예고");
+//        });
+//        binding.step3.setOnClickListener(view -> {
+//            searchNaverNews("법사위심사");
+//        });
+//        binding.step4.setOnClickListener(view -> {
+//            searchNaverNews("본회의심의");
+//        });
+//        binding.step5.setOnClickListener(view -> {
+//            searchNaverNews("법률안 이송");
+//        });
         return binding.getRoot();
     }
 
-
-    private void searchNaverNews(String keyword) {
-        Log.d(TAG, "searchNaverNews: "+keyword);
-        RetrofitNaverSearch.getInstance().create(ApiInterface.class).getSearchResult(
-                client_id,client_pw,"news.json",keyword)
-                .enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.isSuccessful() && response.body() != null){
-                            String result = response.body();
-                            Log.d(TAG, "성공 : " + result);
-                        }else{
-                            Log.e(TAG, "실패 : " + response.body());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.d(TAG, "onFailure: "+t.getMessage());
-                    }
-                });
-    }
 }

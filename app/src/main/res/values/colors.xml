@@ -9,6 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="main">#C3A1FF</color>
     <color name="sub">#F0DDFF</color>
+    <color name="sub2">#ECE5FA</color>
+
     <color name="back">#505557</color>
     <color name="green">#4CB699</color>
     <color name="sky">#DFF5FF</color>

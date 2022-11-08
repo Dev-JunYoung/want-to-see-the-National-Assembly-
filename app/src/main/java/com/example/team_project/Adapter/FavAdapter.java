@@ -4,46 +4,49 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.team_project.databinding.ItemDetailBinding;
+import com.example.team_project.databinding.ItemFavBinding;
 
 import java.util.ArrayList;
 
-public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder>{
-    private ItemDetailBinding binding;
+public class FavAdapter extends RecyclerView.Adapter<FavAdapter.ViewHolder>{
+    private ItemFavBinding binding;
     private ArrayList<RowData> mList;
     private final String TAG=this.getClass().getSimpleName();
 
-    public RowAdapter(ArrayList<RowData> mList) {
+    public FavAdapter(ArrayList<RowData> mList) {
         this.mList = mList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        binding= ItemDetailBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-        RowAdapter.ViewHolder viewHolder=new RowAdapter.ViewHolder(binding.getRoot());
+        binding=ItemFavBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        FavAdapter.ViewHolder viewHolder=new FavAdapter.ViewHolder(binding.getRoot());
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if(19<mList.get(position).getBill_name().length()){
-            holder.bill_name.setText(mList.get(position).getBill_name().substring(0,19)+"...");
-        }else {
-            holder.bill_name.setText(mList.get(position).getBill_name());
+        Log.d(TAG, "onBindViewHolder: "+mList.size());
+        Log.d(TAG, "onBindViewHolder: "+mList.get(position).getStep());
+        switch (mList.get(position).getStep()){
+            case 0:
+                binding.step1.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                binding.step2.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                binding.step4.setVisibility(View.VISIBLE);
+                break;
         }
-        holder.proposer.setText(mList.get(position).getProposer());
-        holder.proposer_dt.setText(mList.get(position).getPropose_dt());
-
-        if((mList.size()-1)==position){
-            Log.d(TAG, "onBindViewHolder: "+mList.get(position));
-        }
+        binding.biiName.setText(mList.get(position).getBill_name());
     }
 
     @Override
@@ -53,13 +56,15 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView bill_name;
-        private TextView proposer;
-        private TextView proposer_dt;
+        private ImageView step1;
+        private ImageView step2;
+        private ImageView step4;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            bill_name=binding.tvBillName;
-            proposer=binding.tvProposer;
-            proposer_dt=binding.tvProposerDt;
+            bill_name=binding.biiName;
+            step1=binding.step1;
+            step2=binding.step2;
+            step4=binding.step4;
             itemView.setOnClickListener(view -> {
                 int pos=getAdapterPosition();
                 if(pos!=RecyclerView.NO_POSITION){
@@ -78,4 +83,5 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.ViewHolder>{
     public void setOnItemClickListener(OnItemClickListener listener){
         this.onItemClickListener=listener;
     }
+
 }
