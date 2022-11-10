@@ -110,8 +110,15 @@ public class SearchResultActivity extends AppCompatActivity {
         rowAdapter=new RowAdapter(list);
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 this, LinearLayoutManager.VERTICAL, false));
+
         rowAdapter.setOnItemClickListener((v, pos) -> {
-            startActivity(new Intent(this,RowDetailActivity.class).putExtra("row",list.get(pos)));
+            if("코로나".equals(KEYWORD)){
+                list.get(pos).setStep(3);
+            }
+            startActivity(new Intent(this,RowDetailActivity.class)
+                    .putExtra("row",list.get(pos))
+                    .putExtra("keyword",KEYWORD)
+            );
         });
         recyclerView.setAdapter(rowAdapter);
     }

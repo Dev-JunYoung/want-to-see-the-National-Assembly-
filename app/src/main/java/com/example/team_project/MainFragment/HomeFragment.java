@@ -2,13 +2,21 @@ package com.example.team_project.MainFragment;
 
 import static com.example.team_project.Retrofit.RetrofitClient.KEY;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -47,6 +55,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ArrayList<RowData> rowList=new ArrayList<>();
     private ArrayList<RowData> favList=new ArrayList<>();
     private JSONArray row;
+    private int i=0;
     public HomeFragment() {
     }
     @Override
@@ -78,12 +87,78 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         binding.step5.setOnClickListener(view -> {
             searchNaverNews("이송");
         });
+        // 본회의 심의 -> 정부이송
 
         return binding.getRoot();
     }
 
+
+
+    private void showNotification(int step,String title) {
+        createNotificationChannel();
+        String status="";
+        int icon_image=0;
+        switch (step){
+            case 2:
+                status="[입법예고 진행 중]";
+                icon_image=R.drawable.icon_step2;
+                break;
+            case 3:
+                status="[위원회/체계자구심사 진행 중]";
+                icon_image=R.drawable.icon_step3;
+                break;
+            case 4:
+                status="[현재 본회의 심의로 이동]";
+                icon_image=R.drawable.icon_step4;
+                break;
+            case 5:
+                Log.d(TAG, "showNotification: 5");
+                status="[법률안 정부이송]";
+                icon_image=R.drawable.icon_step5;
+                break;
+        }
+        title="<b>"+title+"</b>";
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT); //PendingIntent.FLAG_MUTABLE or FLAG_IMMUTABLE
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), i+"")
+                .setSmallIcon(icon_image) //설정한 작은 아이콘. 사용자가 볼 수 있는 유일한 필수 콘텐츠입니다.
+                .setLargeIcon(BitmapFactory.decodeResource(getContext().getResources(), icon_image))
+                //.setContentTitle(title) // 설정한 제목
+                .setContentTitle(Html.fromHtml(title)) // 설정한 제목
+                .setContentText(status) //본문 텍스트
+                .setAutoCancel(true) //사용자가 알림을 탭하면 자동으로 알림을 삭제합니다.
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(BitmapFactory.decodeResource(getContext().getResources(), icon_image)))
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH); //알림 우선순위.Android 8.0 이상의 경우 다음 섹션에 표시된 채널 중요도를 대신 설정해야 합니다
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+        notificationManager.notify(0,builder.build());
+        i++;
+    }
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because // 알림 채널을 생성하지만 API 26+에서만 다음을 수행할 수 있습니다.
+        // the NotificationChannel class is new and not in the support library // Notification Channel 클래스가 새 클래스로 지원 라이브러리에 없음
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name ="CHANNEL"; //채널명
+            String description = "description"; //채널 설명
+            int importance = NotificationManager.IMPORTANCE_HIGH; //중요도
+            NotificationChannel channel = new NotificationChannel(i+"", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance // 채널을 시스템에 등록합니다. 중요도는 변경할 수 없습니다.
+            // or other notification behaviors after this // 또는 이 이후의 다른 알림 동작
+            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
     private void getFavData() {
         favList=SharedPreference.getInstance(getContext()).getFavList();
+        if(favList.size()==0){
+            binding.text.setVisibility(View.VISIBLE);
+            recyclerView_fav.setVisibility(View.GONE);
+        }else {
+            binding.text.setVisibility(View.GONE);
+            recyclerView_fav.setVisibility(View.VISIBLE);
+        }
         favAdapter=new FavAdapter(favList);
         recyclerView_fav.setLayoutManager(new LinearLayoutManager(
                 getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -95,6 +170,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         recyclerView_fav.setAdapter(favAdapter);
         //setRecyclerViewEvent(recyclerView_fav);
+        showNotification(2,favList.get(0).getBill_name());
     }
 
 

@@ -62,6 +62,9 @@ public class RowDetailActivity extends AppCompatActivity implements View.OnClick
             case 1 : // 입법 예고 = step 1
                 binding.imageView.setImageResource(R.drawable.step2);
                 break;
+            case 3 : // 입법 예고
+                binding.imageView.setImageResource(R.drawable.step4);
+                break;
         }
 
         // 북마크 상태 변화 리스너
@@ -69,6 +72,7 @@ public class RowDetailActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked) { // 북마크가 선택됐을 때
+                    data.setStep(3);
                     SharedPreference.getInstance(getApplicationContext()).setFavBill(data);
                 }else{ // 북마크 해제됐을 때
                     SharedPreference.getInstance(getApplicationContext()).setUnFavBill(data);
