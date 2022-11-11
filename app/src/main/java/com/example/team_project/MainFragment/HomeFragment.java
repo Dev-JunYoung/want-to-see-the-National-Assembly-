@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team_project.Adapter.FavAdapter;
+import com.example.team_project.Adapter.FavData;
 import com.example.team_project.Adapter.LatestAdapter;
 import com.example.team_project.Adapter.RowData;
 import com.example.team_project.Event.LinePagerIndicatorDecoration;
@@ -94,8 +95,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
 
-    private void showNotification(int step,String title) {
+    private void showNotification(int step, RowData rowData) {
         createNotificationChannel();
+        String title="";
         String status="";
         int icon_image=0;
         switch (step){
@@ -117,8 +119,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 icon_image=R.drawable.icon_step5;
                 break;
         }
-        title="<b>"+title+"</b>";
-        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT); //PendingIntent.FLAG_MUTABLE or FLAG_IMMUTABLE
+        title="<b>"+rowData.getBill_name()+"</b>";
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, new Intent(getActivity(),RowDetailActivity.class)
+                .putExtra("row",rowData)
+                , PendingIntent.FLAG_UPDATE_CURRENT); //PendingIntent.FLAG_MUTABLE or FLAG_IMMUTABLE
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), i+"")
                 .setSmallIcon(icon_image) //설정한 작은 아이콘. 사용자가 볼 수 있는 유일한 필수 콘텐츠입니다.
                 .setLargeIcon(BitmapFactory.decodeResource(getContext().getResources(), icon_image))
@@ -170,7 +174,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         recyclerView_fav.setAdapter(favAdapter);
         //setRecyclerViewEvent(recyclerView_fav);
-        showNotification(2,favList.get(0).getBill_name());
+        //showNotification(2,favList.get(0));
     }
 
 
@@ -188,7 +192,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             row=new JSONArray(jsonObject.getString("nzmimeepazxkubdpn")).getJSONObject(1).getJSONArray("row");
                             Log.d(TAG, "row: "+row);
 
-                            // index = 0
+                           /* // index = 0
                             rowList.add(new RowData("2118059", "양식산업발전법 일부개정법률안", "김승남의원 등 10인", "2022-11-02",
                                     null,null, "http://likms.assembly.go.kr/bill/billDetail.do?billId=PRC_Q2U2A0V6X1V3Q0D9K2W6W2N3R7J1V0&ageFrom=21&ageTo=21", 0));
                             // index = 1
@@ -196,36 +200,37 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     null,null, "http:\\/\\/likms.assembly.go.kr\\/bill\\/billDetail.do?billId=PRC_N2O2P1E1L0G2I1G7N1C5E0C8A4U0S3&ageFrom=21&ageTo=21", 0));
                             // index = 2
                             rowList.add(new RowData("2118057", "조세특례제한법 일부개정법률안", "이용의원등15인", "2022-11-02",
-                                    null,null, "http:\\/\\/likms.assembly.go.kr\\/bill\\/billDetail.do?billId=PRC_E2X2B1P0M2E8J1B4G0Y5N3G2W0A6H6&ageFrom=21&ageTo=21", 0));
-//                            for(int i=0;i<3;i++){
-//
-//                                // 일일히 데이터 추가하기
-//                                // row list 를 만들어야 한다.
-//
-//
-//                                if (!"null".equals(row.getJSONObject(i).getString("COMMITTEE"))){
-//                                    rowList.add(new RowData(
-//                                                    row.getJSONObject(i).getString("BILL_NO"),
-//                                                    row.getJSONObject(i).getString("BILL_NAME"),
-//                                                    row.getJSONObject(i).getString("PROPOSER"),
-//                                                    row.getJSONObject(i).getString("PROPOSE_DT"),
-//                                                    row.getJSONObject(i).getString("COMMITTEE_ID"),
-//                                                    row.getJSONObject(i).getString("COMMITTEE"),
-//                                                    row.getJSONObject(i).getString("DETAIL_LINK")
-//                                            ));
-//                                }else {
-//                                    rowList.add(new RowData(
-//                                            row.getJSONObject(i).getString("BILL_NO"),
-//                                            row.getJSONObject(i).getString("BILL_NAME"),
-//                                            row.getJSONObject(i).getString("PROPOSER"),
-//                                            row.getJSONObject(i).getString("PROPOSE_DT"),
-//                                            "-",
-//                                            "-",
-//                                            row.getJSONObject(i).getString("DETAIL_LINK")
-//                                    ));
-//                                }
-//
-//                            }
+                                    null,null, "http:\\/\\/likms.assembly.go.kr\\/bill\\/billDetail.do?billId=PRC_E2X2B1P0M2E8J1B4G0Y5N3G2W0A6H6&ageFrom=21&ageTo=21", 0));*/
+                            for(int i=0;i<3;i++){
+
+                                // 일일히 데이터 추가하기
+                                // row list 를 만들어야 한다.
+
+                                if (!"null".equals(row.getJSONObject(i).getString("COMMITTEE"))){
+                                    rowList.add(new RowData(
+                                                    row.getJSONObject(i).getString("BILL_NO"),
+                                                    row.getJSONObject(i).getString("BILL_NAME"),
+                                                    row.getJSONObject(i).getString("PROPOSER"),
+                                                    row.getJSONObject(i).getString("PROPOSE_DT"),
+                                                    row.getJSONObject(i).getString("COMMITTEE_ID"),
+                                                    row.getJSONObject(i).getString("COMMITTEE"),
+                                                    row.getJSONObject(i).getString("DETAIL_LINK"),
+                                                    0
+                                            ));
+                                }else {
+                                    rowList.add(new RowData(
+                                            row.getJSONObject(i).getString("BILL_NO"),
+                                            row.getJSONObject(i).getString("BILL_NAME"),
+                                            row.getJSONObject(i).getString("PROPOSER"),
+                                            row.getJSONObject(i).getString("PROPOSE_DT"),
+                                            "-",
+                                            "-",
+                                            row.getJSONObject(i).getString("DETAIL_LINK"),
+                                            0
+                                    ));
+                                }
+
+                            }
 
                             latestAdapter=new LatestAdapter(rowList);
                             recyclerView_latest.setLayoutManager(new LinearLayoutManager(

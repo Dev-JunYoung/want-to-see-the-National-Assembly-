@@ -72,7 +72,7 @@ public class RowDetailActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked) { // 북마크가 선택됐을 때
-                    data.setStep(3);
+
                     SharedPreference.getInstance(getApplicationContext()).setFavBill(data);
                 }else{ // 북마크 해제됐을 때
                     SharedPreference.getInstance(getApplicationContext()).setUnFavBill(data);
